@@ -12,7 +12,7 @@ my $db_password = "santiago81";
 
 # Subrutina para conectar a la base de datos
 sub connect_to_db {
-    my $dbh = DBI->connect("DBI:MariaDB:database=$db_name;host=$db_host", $db_user, $db_password, {
+    my $dbh = DBI->connect("DBI:MariaDB:database=$db_name;host=mariadb", $db_user, $db_password, {
         RaiseError => 1,
         PrintError => 0,
         AutoCommit => 1,
