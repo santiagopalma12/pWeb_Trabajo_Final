@@ -1,0 +1,18 @@
+docker-compose build;
+docker-compose up;
+docker exec -it mariadb-container bash
+mysql -u root -p
+santiago81
+USE gestor_finanzas;
+SELECT * FROM transacciones;
+
+
+
+
+
+
+
+
+
+DROP DATABASE x;
+
