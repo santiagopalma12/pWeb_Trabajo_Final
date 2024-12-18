@@ -25,7 +25,7 @@ if ($@) {
 }
 
 # Realizar la consulta para los últimos 5 movimientos
-my $sth = $dbh->prepare('SELECT tipo, descripcion, cantidad, fecha FROM transacciones ORDER BY fecha DESC LIMIT 5');
+my $sth = $dbh->prepare('SELECT tipo, descripcion, cantidad, fecha FROM transacciones ORDER BY fecha DESC LIMIT 1000');
 $sth->execute();
 
 my @movimientos;
