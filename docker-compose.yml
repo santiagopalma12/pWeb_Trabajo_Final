@@ -1,15 +1,13 @@
 
-
 services:
   apache:
     build: .
     container_name: apache-container
     ports:
-      - "8080:80"  # Puedes cambiar el puerto si es necesario
+      - "8080:80"
     volumes:
-      - ./public:/var/www/html    # Archivos estáticos como HTML, CSS, JS
-      - ./cgi-bin:/usr/lib/cgi-bin  # Scripts CGI (Perl)
-      - ./apache-config:/etc/apache2/sites-enabled  # Configuración de Apache
+      - ./html:/var/www/html
+      - ./apache-config:/etc/apache2/sites-enabled
     depends_on:
       - mariadb
     networks:
@@ -21,11 +19,12 @@ services:
     container_name: mariadb-container
     environment:
       MYSQL_ROOT_PASSWORD: santiago81
-      MYSQL_DATABASE: finance_db  # Cambié el nombre de la base de datos a finance_db
+      MYSQL_DATABASE: gestor_finanzas
       MYSQL_USER: root
       MYSQL_PASSWORD: santiago81
     volumes:
       - ./mariadb-data:/var/lib/mysql
+      - ./gestor_finanzas.sql:/docker-entrypoint-initdb.d/gestor_finanzas.sql
     networks:
       - webnet
     restart: always
