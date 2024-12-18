@@ -17,7 +17,7 @@ print <<EOF;
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
  <style>
     body {
-        background-image: url('/fondo_finanzas.jpeg');
+        background-image: url('../imagenes/fondo_finanzas.jpeg');
         background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
@@ -145,7 +145,7 @@ print <<EOF;
    <div class="container">
         <div class="header">
             <div class="image-header">
-                <img src="/image_finanzas.png" alt="Gestión Financiera">
+                <img src="../imagenes/image_finanzas.png" alt="Gestión Financiera"> 
             </div>
             <h2 class="text-center mb-4">Gestión Financiera</h2>
         </div>
@@ -154,9 +154,6 @@ print <<EOF;
             <!-- Saldo Actual -->
             <div class="saldo">
                 <h3>Saldo Actual</h3>
-                <form action="verSaldo.pl" method="GET">
-                    <button type="submit" class="btn btn-info">Ver Saldo</button>
-                </form>
                 <div id="saldoContenido" style="margin-top: 20px;">
                     <!-- El saldo será mostrado aquí después de hacer la solicitud -->
                 </div>
