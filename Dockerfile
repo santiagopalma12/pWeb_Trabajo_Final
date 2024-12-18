@@ -1,8 +1,10 @@
+# Usar Ubuntu 20.04 LTS como imagen base
 FROM ubuntu:20.04
 
+# Configurar el entorno
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Actualiza e instala los paquetes necesarios
+# Actualizar el sistema e instalar dependencias necesarias
 RUN apt-get update && apt-get install -y \
     apache2 \
     perl \
@@ -15,37 +17,34 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar los módulos de Perl
+# Instalar módulos Perl adicionales con cpanm
 RUN cpanm --notest CGI DBI JSON DBD::MariaDB
 
-# Copiar los archivos HTML y JS a la carpeta correspondiente en el contenedor
-COPY ./public /var/www/html/
+# Copiar los archivos del proyecto al directorio web de Apache
+COPY ./html /var/www/html/
 
-# Copiar los scripts Perl (CGI) al contenedor
-COPY ./cgi-bin /usr/lib/cgi-bin/
+# Eliminar la página predeterminada de Apache
+RUN rm /var/www/html/index.html
 
-# Copiar la base de datos de configuración (si es necesario)
-COPY ./database/setup.sql /root/setup.sql
+# Configurar permisos de los archivos
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html && \
+    chmod +x /var/www/html/*.pl
 
-# Cambiar permisos en los archivos
-RUN chown -R www-data:www-data /var/www/html /usr/lib/cgi-bin && \
-    chmod -R 755 /var/www/html /usr/lib/cgi-bin && \
-    chmod +x /usr/lib/cgi-bin/*.pl
-
-# Habilitar modulos de Apache para CGI
+# Habilitar CGI en Apache
 RUN a2enmod cgi
 
-# Configurar el servidor web
+# Configurar Apache para permitir ejecución de scripts CGI
 RUN echo "<Directory /var/www/html/>" >> /etc/apache2/apache2.conf && \
     echo "  Options +Indexes +FollowSymLinks +ExecCGI" >> /etc/apache2/apache2.conf && \
     echo "  AllowOverride None" >> /etc/apache2/apache2.conf && \
     echo "  Require all granted" >> /etc/apache2/apache2.conf && \
     echo "</Directory>" >> /etc/apache2/apache2.conf && \
     echo "AddHandler cgi-script .pl" >> /etc/apache2/apache2.conf && \
-    echo "DirectoryIndex login.html" >> /etc/apache2/apache2.conf
+    echo "DirectoryIndex echo.pl" >> /etc/apache2/apache2.conf
 
-# Exponer el puerto 80
+# Exponer el puerto 80 para Apache
 EXPOSE 80
 
-# Iniciar Apache en primer plano
+# Iniciar Apache cuando el contenedor se ejecute
 CMD ["apache2ctl", "-D", "FOREGROUND"]
