@@ -1,0 +1,21 @@
+docker-compose build;
+docker-compose up;
+docker exec -it mariadb-container bash
+mysql -u root -p
+santiago81
+USE gestor_finanzas;
+SELECT * FROM transacciones;
+
+USE usuarios;
+SELECT * FROM users;
+
+INSERT INTO users (username, password) 
+VALUES ('admin', 'password123');
+
+
+
+
+
+
+DROP DATABASE x;
+
